@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HDB Resale Price Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            margin: 20px;
+        }
+        #chart {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>HDB Resale Telok Blangah Heights (Ridgeview) Price Analysis</h1>
+    <p>Interactive chart showing resale prices for 70A, 70B, and 70C over time.</p>
+    <div id="chart"></div>
+    <div id="stats" style="margin-top: 20px; font-size: 16px; font-weight: bold;"></div>
+
+    <div id="writeup">
+        <strong>Hypothesis and Choice:</strong>
+        <p>
+            This analysis focuses on Telok Blangah Heights Ridgeview to monitor the resale value of my property in Block 70A, mid-floor. Comparing prices across blocks helps highlight 70A’s higher market value, guiding my expectations for a resale price of at least S$940,000 by mid-2025.
+        </p>
+    </div>
+
+    <script>
+        // Initialize chart
+        var chart = echarts.init(document.getElementById('chart'));
+
+        // Dataset
+        var dataset = [
+    { period: "Feb-21", price: 762000, block: "70B", floor: "Mid", storey: "07 TO 09" },
+    { period: "Feb-21", price: 800000, block: "70B", floor: "Mid", storey: "13 TO 15" },
+    { period: "Apr-21", price: 793000, block: "70A", floor: "Mid", storey: "13 TO 15" },
+    { period: "Apr-21", price: 810000, block: "70A", floor: "Mid", storey: "13 TO 15" },
+    { period: "Apr-21", price: 770000, block: "70C", floor: "Mid", storey: "13 TO 15" },
+    { period: "May-21", price: 850000, block: "70A", floor: "Mid", storey: "16 TO 18" },
+    { period: "May-21", price: 778000, block: "70B", floor: "Mid", storey: "07 TO 09" },
+    { period: "Jun-21", price: 770000, block: "70A", floor: "Mid", storey: "07 TO 09" },
+    { period: "Jun-21", price: 868000, block: "70A", floor: "Mid", storey: "10 TO 12" },
+    { period: "Jun-21", price: 790000, block: "70C", floor: "Mid", storey: "16 TO 18" },
+    { period: "Jul-21", price: 820000, block: "70A", floor: "Mid", storey: "13 TO 15" },
+    { period: "Jul-21", price: 785888, block: "70B", floor: "Mid", storey: "07 TO 09" },
+    { period: "Aug-21", price: 770000, block: "70C", floor: "Mid", storey: "10 TO 12" },
+    { period: "Aug-21", price: 775000, block: "70C", floor: "Mid", storey: "10 TO 12" },
+    { period: "Aug-21", price: 785000, block: "70C", floor: "Mid", storey: "10 TO 12" },
+    { period: "Sep-21", price: 800000, block: "70A", floor: "Mid", storey: "13 TO 15" },
+    { period: "Sep-21", price: 823000, block: "70A", floor: "Mid", storey: "13 TO 15" },
+    { period: "Sep-21", price: 780000, block: "70C", floor: "Mid", storey: "07 TO 09" },
+    { period: "Sep-21", price: 785000, block: "70C", floor: "Mid", storey: "13 TO 15" },
+    { period: "Nov-21", price: 808000, block: "70A", floor: "Mid", storey: "07 TO 09" },
+    { period: "Nov-21", price: 820000, block: "70A", floor: "Mid", storey: "10 TO 12" },
+    { period: "Nov-21", price: 790000, block: "70B", floor: "Mid", storey: "10 TO 12" },
+    { period: "Nov-21", price: 800000, block: "70B", floor: "Mid", storey: "07 TO 09" },
+    { period: "Nov-21", price: 810000, block: "70B", floor: "Mid", storey: "10 TO 12" },
+    { period: "Nov-21", price: 860000, block: "70B", floor: "Mid", storey: "10 TO 12" },
+    { period: "Nov-21", price: 780088, block: "70C", floor: "Mid", storey: "13 TO 15" },
+    { period: "Nov-21", price: 835000, block: "70C", floor: "Mid", storey: "16 TO 18" },
+    { period: "Dec-21", price: 860000, block: "70A", floor: "Mid", storey: "16 TO 18" },
+    { period: "Dec-21", price: 808000, block: "70C", floor: "Mid", storey: "16 TO 18" },
+    { period: "Dec-21", price: 828000, block: "70C", floor: "Mid", storey: "13 TO 15" },
+    { period: "Feb-22", price: 815800, block: "70C", floor: "Mid", storey: "13 TO 15" },
+    { period: "Mar-22", price: 883000, block: "70A", floor: "Mid", storey: "16 TO 18" },
+    { period: "Mar-22", price: 823000, block: "70C", floor: "Mid", storey: "16 TO 18" },
+    { period: "Apr-22", price: 830000, block: "70C", floor: "Mid", storey: "16 TO 18" },
+    { period: "Jul-22", price: 830000, block: "70A", floor: "Mid", storey: "10 TO 12" },
+    { period: "Jul-22", price: 830000, block: "70C", floor: "Mid", storey: "10 TO 12" },
+    { period: "Aug-22", price: 845000, block: "70A", floor: "Mid", storey: "07 TO 09" },
+    { period: "Aug-22", price: 835000, block: "70C", floor: "Mid", storey: "16 TO 18" },
+    { period: "Sep-22", price: 788000, block: "70B", floor: "Mid", storey: "16 TO 18" },
+    { period: "Sep-22", price: 857000, block: "70B", floor: "Mid", storey: "16 TO 18" },
+    { period: "Jan-23", price: 855000, block: "70A", floor: "Mid", storey: "10 TO 12" },
+    { period: "Jan-23", price: 813888, block: "70C", floor: "Mid", storey: "13 TO 15" },
+    { period: "Jan-23", price: 860000, block: "70C", floor: "Mid", storey: "07 TO 09" },
+    { period: "Mar-23", price: 776088, block: "70C", floor: "Mid", storey: "07 TO 09" },
+    { period: "Apr-23", price: 880000, block: "70B", floor: "Mid", storey: "16 TO 18" },
+    { period: "Sep-23", price: 920000, block: "70A", floor: "Mid", storey: "16 TO 18" },
+    { period: "Nov-23", price: 895000, block: "70A", floor: "Mid", storey: "16 TO 18" },
+    { period: "Dec-23", price: 848000, block: "70C", floor: "Mid", storey: "10 TO 12" },
+    { period: "Jan-24", price: 895000, block: "70A", floor: "Mid", storey: "13 TO 15" },
+    { period: "Feb-24", price: 830000, block: "70C", floor: "Mid", storey: "13 TO 15" },
+    { period: "Apr-24", price: 920000, block: "70A", floor: "Mid", storey: "16 TO 18" },
+    { period: "Apr-24", price: 855000, block: "70B", floor: "Mid", storey: "07 TO 09" },
+    { period: "May-24", price: 910000, block: "70C", floor: "Mid", storey: "13 TO 15" },
+    { period: "May-24", price: 885000, block: "70C", floor: "Mid", storey: "16 TO 18" },
+    { period: "Jul-24", price: 900000, block: "70A", floor: "Mid", storey: "07 TO 09" },
+    { period: "Jul-24", price: 898000, block: "70A", floor: "Mid", storey: "10 TO 12" },
+    { period: "Jul-24", price: 880000, block: "70C", floor: "Mid", storey: "10 TO 12" },
+    { period: "Sep-24", price: 910000, block: "70B", floor: "Mid", storey: "16 TO 18" },
+    { period: "Oct-24", price: 928888, block: "70A", floor: "Mid", storey: "07 TO 09" }
+];
+
+        // Group dataset by block
+        var block70A = dataset.filter(d => d.block === "70A");
+        var block70B = dataset.filter(d => d.block === "70B");
+        var block70C = dataset.filter(d => d.block === "70C");
+
+        // Extract x-axis categories (unique periods)
+        var categories = [...new Set(dataset.map(d => d.period))];
+
+        // Prepare series data
+        function prepareSeriesData(blockData) {
+            return categories.map(period => {
+                const point = blockData.find(d => d.period === period);
+                return point ? { value: point.price, floor: point.floor, storey: point.storey } : null;
+            });
+        }
+
+        var series70A = prepareSeriesData(block70A);
+        var series70B = prepareSeriesData(block70B);
+        var series70C = prepareSeriesData(block70C);
+
+        // Calculate overall price growth line (shifted lower)
+        var startPrice = Math.min(...dataset.map(d => d.price)) - 20000;
+        var endPrice = Math.max(...dataset.map(d => d.price)) - 20000;
+
+        var growthLine = [
+            { coord: [0, startPrice] }, // Start at the first x-axis point
+            { coord: [categories.length - 1, endPrice] } // End at the last x-axis point
+        ];
+
+        // Chart configuration
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    if (params.value !== null) {
+                        return `
+                            <strong>${categories[params.dataIndex]}</strong><br>
+                            Block: ${params.seriesName}<br>
+                            Floor: ${params.data.floor}<br>
+                            Storey: ${params.data.storey}<br>
+                            Price: S$${params.value}
+                        `;
+                    }
+                }
+            },
+            legend: {
+                data: ['70A', '70B', '70C'],
+                top: '5%'
+            },
+            xAxis: {
+                type: 'category',
+                name: 'Period',
+                nameLocation: 'middle',
+                nameTextStyle: {
+                    fontSize: 14,
+                    padding: 20
+                },
+                data: categories
+            },
+            yAxis: {
+                type: 'value',
+                name: 'Resale Price (SGD)',
+                nameLocation: 'middle',
+                nameTextStyle: {
+                    fontSize: 14,
+                    padding: 40
+                },
+                min: 700000,
+                max: 1000000,
+            },
+            series: [
+                {
+                    name: '70A',
+                    type: 'scatter',
+                    data: series70A,
+                    itemStyle: { color: 'red' },
+                    symbol: 'circle', // Circle shape
+                    symbolSize: 10
+                },
+                {
+                    name: '70B',
+                    type: 'scatter',
+                    data: series70B,
+                    itemStyle: { color: 'blue' },
+                    symbol: 'rect', // Square shape
+                    symbolSize: 12
+                },
+                {
+                    name: '70C',
+                    type: 'scatter',
+                    data: series70C,
+                    itemStyle: { color: 'green' },
+                    symbol: 'triangle', // Triangle shape
+                    symbolSize: 14
+                },
+                {
+                    type: 'line',
+                    name: 'Overall Growth',
+                    data: null,
+                    markLine: {
+                        silent: true,
+                        lineStyle: {
+                            type: 'dashed',
+                            color: 'black'
+                        },
+                        data: [
+                            growthLine
+                        ]
+                    }
+                }
+            ]
+        };
+
+        // Render chart
+        chart.setOption(option);
+    </script>
+</body>
+</html>
